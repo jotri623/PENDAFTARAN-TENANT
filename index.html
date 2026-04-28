@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Form Pendaftaran Tenant</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #f5f5f5;
+    margin: 0;
+}
+.container {
+    max-width: 600px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 10px;
+}
+.page { display: none; }
+.page.active { display: block; }
+input, textarea, select {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+button {
+    width: 100%;
+    padding: 12px;
+    background: orange;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+button:hover { background: darkorange; }
+.banner { width:100%; border-radius:10px; margin-bottom:15px;}
+.box {
+    border:1px solid #ddd;
+    padding:10px;
+    margin-bottom:10px;
+    border-radius:5px;
+}
+.error {
+    border: 1px solid red;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- PAGE 1 -->
+<div class="page active" id="page1">
+<img src="banner.jpg" class="banner">
+
+<h2>Form Pendaftaran Tenant</h2>
+
+<label>Nama Lengkap *</label>
+<input type="text" id="nama">
+
+<label>Nomor Identitas *</label>
+<input type="text" id="identitas">
+
+<label>Nama Usaha *</label>
+<input type="text" id="usaha">
+
+<label>Jenis Produk *</label>
+<select id="produk">
+<option value="">-- Pilih --</option>
+<option>F&B (Makanan & Minuman)</option>
+<option>Ritel / Fashion</option>
+<option>Elektronik & Gadget</option>
+<option>Jasa</option>
+</select>
+
+<label>Email *</label>
+<input type="email" id="email">
+
+<label>No Telepon *</label>
+<input type="text" id="telp">
+
+<label>Alamat *</label>
+<textarea id="alamat"></textarea>
+
+<button onclick="validatePage1()">Lanjut</button>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="page2">
+<h2>Pilih Booth *</h2>
+
+<div class="box">
+<b>Booth Standard — Rp 500.000</b>
+<input type="radio" name="booth" value="standard">
+</div>
+
+<div class="box">
+<b>Booth Premium — Rp 800.000</b>
+<input type="radio" name="booth" value="premium">
+</div>
+
+<div class="box">
+<b>Booth VIP — Rp 1.000.000</b>
+<input type="radio" name="booth" value="vip">
+</div>
+
+<label>Upload Logo (Opsional)</label>
+<input type="file">
+
+<button onclick="validatePage2()">Lanjut</button>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="page3">
+<h2>Pembayaran</h2>
+
+<img src="QRIS-PEMBAYARAN.png" style="width:100%;border-radius:10px;">
+
+<label>Upload Bukti Pembayaran *</label>
+<input type="file" id="bukti">
+
+<label>Pertanyaan (Opsional)</label>
+<textarea></textarea>
+
+<button onclick="validatePage3()">Kirim</button>
+</div>
+
+<!-- PAGE 4 -->
+<div class="page" id="page4">
+<h2>Terima Kasih!</h2>
+<p>Pendaftaran berhasil dikirim.</p>
+<p>Kami akan menghubungi melalui email.</p>
+
+<button onclick="location.reload()">Kembali ke Beranda</button>
+</div>
+
+</div>
+
+<script>
+function clearError(inputs){
+    inputs.forEach(i => i.classList.remove('error'));
+}
+
+function validatePage1(){
+    let inputs = [
+        document.getElementById('nama'),
+        document.getElementById('identitas'),
+        document.getElementById('usaha'),
+        document.getElementById('produk'),
+        document.getElementById('email'),
+        document.getElementById('telp'),
+        document.getElementById('alamat')
+    ];
+
+    let valid = true;
+
+    inputs.forEach(input => {
+        if(input.value.trim() === ""){
+            input.classList.add('error');
+            valid = false;
+        }
+    });
+
+    if(!valid){
+        alert("Harap isi semua data terlebih dahulu!");
+        return;
+    }
+
+    nextPage(2);
+}
+
+function validatePage2(){
+    let booth = document.querySelector('input[name="booth"]:checked');
+
+    if(!booth){
+        alert("Silakan pilih kategori booth!");
+        return;
+    }
+
+    nextPage(3);
+}
+
+function validatePage3(){
+    let bukti = document.getElementById('bukti');
+
+    if(bukti.files.length === 0){
+        alert("Upload bukti pembayaran terlebih dahulu!");
+        return;
+    }
+
+    nextPage(4);
+}
+
+function nextPage(page){
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page'+page).classList.add('active');
+}
+</script>
+
+</body>
+</html>
